@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager Enablement Toolkit — Tekion Customer Value Transformation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+  :root {
+    --teal:         #04DEBB;
+    --teal-dk:      #17B79F;
+    --teal-xdk:     #0a8a76;
+    --teal-lt:      rgba(4,222,187,0.09);
+    --teal-border:  rgba(4,222,187,0.25);
+    --navy:         #0d2137;
+    --navy-md:      #163352;
+    --bg-page:      #f1f5f9;
+    --bg-white:     #ffffff;
+    --bg-off:       #f7f9fc;
+    --border:       #e2e8f0;
+    --border-md:    #cbd5e1;
+    --text-primary: #0f172a;
+    --text-body:    #334155;
+    --text-muted:   #64748b;
+    --text-faint:   #94a3b8;
+    --cvm-color:    #17B79F;
+    --cvm-bg:       rgba(23,183,159,0.08);
+    --cvm-border:   rgba(23,183,159,0.25);
+    --cva-color:    #1a62b5;
+    --cva-bg:       rgba(26,98,181,0.08);
+    --cva-border:   rgba(26,98,181,0.22);
+    --vva-color:    #6344b5;
+    --vva-bg:       rgba(99,68,181,0.07);
+    --vva-border:   rgba(99,68,181,0.20);
+    --warn-color:   #b45309;
+    --warn-bg:      rgba(180,83,9,0.06);
+    --warn-border:  rgba(180,83,9,0.22);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg-page);
+    color: var(--text-body);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 32px auto;
+    background: var(--bg-white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+    border: 1px solid var(--border);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--navy);
+    padding: 36px 48px 32px;
+    position: relative; overflow: hidden;
+  }
+  .header::after {
+    content: ''; position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(4,222,187,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .wordmark {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
+    letter-spacing: -0.5px; color: var(--teal); margin-bottom: 14px;
+  }
+  .header h1 {
+    font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800;
+    color: #fff; letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 5px;
+  }
+  .header-sub {
+    font-size: 14px; color: var(--teal); font-weight: 500;
+    font-style: italic; margin-bottom: 20px;
+  }
+  .header-meta {
+    display: flex; flex-wrap: wrap; gap: 28px;
+    border-top: 1px solid rgba(255,255,255,0.10); padding-top: 18px;
+  }
+  .header-meta span { font-size: 12px; color: rgba(255,255,255,0.42); }
+  .header-meta span strong {
+    color: rgba(255,255,255,0.88); display: block;
+    font-size: 11px; font-family: 'DM Mono', monospace;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px;
+  }
+
+  /* ── SYSTEM MAP ── */
+  .system-map {
+    background: var(--navy);
+    border-bottom: 1px solid rgba(4,222,187,0.15);
+    padding: 9px 48px;
+    display: flex; align-items: center; gap: 0;
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase; overflow-x: auto;
+  }
+  .sm-label {
+    color: var(--teal); margin-right: 16px; white-space: nowrap;
+    flex-shrink: 0; font-weight: 500; letter-spacing: 1.5px;
+  }
+  .sm-divider {
+    display: inline-block; width: 1px; height: 12px;
+    background: rgba(255,255,255,0.15); margin: 0 4px 0 0; flex-shrink: 0;
+  }
+  .sm-node { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
+  .sm-item {
+    padding: 4px 12px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.38); white-space: nowrap; background: transparent;
+  }
+  .sm-item.active {
+    background: rgba(4,222,187,0.12); border-color: rgba(4,222,187,0.35);
+    color: var(--teal); font-weight: 500;
+  }
+  .sm-arrow { color: rgba(255,255,255,0.18); margin: 0 6px; font-size: 10px; }
+
+  /* ── BODY ── */
+  .body { padding: 40px 48px 52px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--bg-off); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px 24px; margin-bottom: 40px;
+  }
+  .toc-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal-xdk); margin-bottom: 14px;
+  }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .toc-item {
+    background: var(--bg-white); border: 1px solid var(--border);
+    border-radius: 6px; padding: 14px 16px; cursor: pointer;
+    transition: border-color 0.15s; text-decoration: none;
+    display: block;
+  }
+  .toc-item:hover { border-color: var(--teal-dk); }
+  .toc-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
+    color: var(--teal-dk); line-height: 1; margin-bottom: 6px;
+  }
+  .toc-title { font-weight: 600; font-size: 13px; color: var(--text-primary); margin-bottom: 3px; }
+  .toc-desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.45; }
+
+  /* ── SECTION HEADERS ── */
+  h2 {
+    font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+    color: var(--text-primary); letter-spacing: -0.3px;
+    margin-bottom: 6px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--teal); margin-top: 48px;
+    scroll-margin-top: 20px;
+  }
+  h2:first-of-type { margin-top: 0; }
+  .section-intro {
+    font-size: 13.5px; color: var(--text-muted); margin-bottom: 24px;
+    line-height: 1.65;
+  }
+
+  /* ── PURPOSE NOTE ── */
+  .purpose-note {
+    background: var(--teal-lt); border-left: 3px solid var(--teal-dk);
+    border-radius: 0 6px 6px 0; padding: 16px 20px; margin-bottom: 32px;
+    font-size: 13.5px; color: var(--text-body); line-height: 1.7;
+  }
+
+  section { margin-bottom: 48px; }
+
+  /* ── OUTCOME CARDS ── */
+  .outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .outcome-card {
+    background: var(--bg-off); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 18px;
+  }
+  .outcome-card-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--teal-xdk); margin-bottom: 8px;
+  }
+  .outcome-card h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13.5px;
+    color: var(--text-primary); margin-bottom: 6px;
+  }
+  .outcome-card p { font-size: 13px; color: var(--text-body); line-height: 1.6; }
+
+  /* ── ROLE ACCOUNTABILITY BLOCKS ── */
+  .role-block {
+    border-radius: 8px; overflow: hidden; margin-bottom: 10px;
+    border: 1px solid var(--border);
+  }
+  .role-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 18px;
+  }
+  .rh-cvm { background: var(--cvm-bg); border-bottom: 1px solid var(--cvm-border); }
+  .rh-cva { background: var(--cva-bg); border-bottom: 1px solid var(--cva-border); }
+  .rh-vva { background: var(--vva-bg); border-bottom: 1px solid var(--vva-border); }
+  .role-badge {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+  }
+  .rb-cvm { background: var(--cvm-bg); color: var(--cvm-color); border: 1px solid var(--cvm-border); }
+  .rb-cva { background: var(--cva-bg); color: var(--cva-color); border: 1px solid var(--cva-border); }
+  .rb-vva { background: var(--vva-bg); color: var(--vva-color); border: 1px solid var(--vva-border); }
+  .role-name { font-weight: 700; font-size: 14px; color: var(--text-primary); flex: 1; }
+  .role-body { padding: 14px 18px; background: var(--bg-white); }
+  .role-body p { font-size: 13.5px; color: var(--text-body); line-height: 1.65; margin-bottom: 10px; }
+  .role-body p:last-child { margin-bottom: 0; }
+  .role-body strong { color: var(--text-primary); }
+
+  /* ── FRAMEWORK CARDS ── */
+  .framework-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .framework-card {
+    background: var(--bg-off); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 18px;
+  }
+  .fw-name {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 13.5px; color: var(--text-primary); margin-bottom: 4px;
+  }
+  .fw-sub {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--teal-xdk); margin-bottom: 8px;
+  }
+  .fw-desc { font-size: 13px; color: var(--text-body); line-height: 1.6; }
+
+  /* ── TIMELINE ── */
+  .timeline { margin-bottom: 20px; }
+  .timeline-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-date {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--teal-xdk); min-width: 90px; flex-shrink: 0;
+    padding-top: 2px; font-weight: 500;
+  }
+  .timeline-content { flex: 1; }
+  .timeline-title { font-weight: 600; font-size: 13.5px; color: var(--text-primary); margin-bottom: 4px; }
+  .timeline-desc { font-size: 13px; color: var(--text-body); line-height: 1.6; }
+
+  /* ── FAQ ── */
+  .faq-item {
+    border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; margin-bottom: 8px;
+  }
+  .faq-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 18px; background: var(--bg-off);
+    cursor: pointer; user-select: none; transition: background 0.15s;
+  }
+  .faq-header:hover { background: #edf2f7; }
+  .faq-q { flex: 1; font-weight: 600; font-size: 13.5px; color: var(--text-primary); }
+  .faq-chevron { font-size: 10px; color: var(--text-faint); transition: transform 0.2s; }
+  .faq-item.open .faq-chevron { transform: rotate(90deg); }
+  .faq-body {
+    display: none; padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-white);
+    font-size: 13.5px; color: var(--text-body); line-height: 1.7;
+  }
+  .faq-item.open .faq-body { display: block; }
+  .faq-note {
+    background: var(--warn-bg); border: 1px solid var(--warn-border);
+    border-radius: 6px; padding: 10px 14px; margin-top: 10px;
+    font-size: 12.5px; color: var(--text-body); line-height: 1.6;
+  }
+  .faq-note-label {
+    font-family: 'DM Mono', monospace; font-size: 8px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--warn-color); margin-bottom: 4px;
+  }
+  .faq-tag {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 10px; flex-shrink: 0;
+  }
+  .faq-tag-cvm { background: var(--cvm-bg); color: var(--cvm-color); border: 1px solid var(--cvm-border); }
+  .faq-tag-cva { background: var(--cva-bg); color: var(--cva-color); border: 1px solid var(--cva-border); }
+  .faq-tag-all { background: var(--teal-lt); color: var(--teal-xdk); border: 1px solid var(--teal-border); }
+  .faq-tag-comp { background: rgba(99,68,181,0.07); color: #6344b5; border: 1px solid rgba(99,68,181,0.20); }
+
+  /* ── ENABLEMENT COMPANION ── */
+  .companion-item {
+    border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; margin-bottom: 10px;
+  }
+  .companion-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; background: var(--bg-off);
+    cursor: pointer; user-select: none; transition: background 0.15s;
+  }
+  .companion-header:hover { background: #edf2f7; }
+  .companion-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--navy); color: var(--teal);
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 12px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .companion-title { flex: 1; font-weight: 600; font-size: 14px; color: var(--text-primary); }
+  .companion-date {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-faint); white-space: nowrap;
+  }
+  .companion-chevron { font-size: 10px; color: var(--text-faint); transition: transform 0.2s; }
+  .companion-item.open .companion-chevron { transform: rotate(90deg); }
+  .companion-body {
+    display: none; padding: 18px 20px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-white);
+  }
+  .companion-item.open .companion-body { display: block; }
+  .companion-what {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal-xdk); margin-bottom: 6px;
+  }
+  .companion-desc {
+    font-size: 13.5px; color: var(--text-body); line-height: 1.7; margin-bottom: 14px;
+  }
+  .key-concepts { list-style: none; }
+  .key-concepts li {
+    font-size: 13px; color: var(--text-body); line-height: 1.55;
+    padding: 6px 0 6px 16px; position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .key-concepts li:last-child { border-bottom: none; }
+  .key-concepts li::before {
+    content: '›'; position: absolute; left: 0;
+    color: var(--teal-dk); font-weight: 700;
+  }
+  .your-role-box {
+    background: var(--teal-lt); border: 1px solid var(--teal-border);
+    border-radius: 6px; padding: 12px 16px; margin-top: 14px;
+  }
+  .your-role-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal-xdk); margin-bottom: 6px;
+  }
+  .your-role-box p { font-size: 13px; color: var(--text-body); line-height: 1.65; }
+
+  /* ── COACHING PROMPTS ── */
+  .prompt-list { margin-bottom: 8px; }
+  .prompt-item {
+    background: var(--bg-off); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px 16px 12px 30px;
+    margin-bottom: 8px; font-size: 13.5px; color: var(--text-primary);
+    line-height: 1.65; position: relative;
+  }
+  .prompt-item::before {
+    content: '"'; position: absolute; top: 6px; left: 10px;
+    font-size: 20px; color: var(--border-md);
+    font-family: Georgia, serif; line-height: 1;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.28);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 48px; font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.8px;
+    text-transform: uppercase; flex-wrap: wrap; gap: 8px;
+  }
+  footer strong { color: var(--teal); font-weight: 500; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; border-radius: 0; }
+    .faq-body, .companion-body { display: block !important; }
+    .faq-chevron, .companion-chevron { display: none; }
+    .system-map { display: none; }
+  }
+
+  /* ── DAY IN THE LIFE (Section 4) ── */
+  /* ── SCENARIO HEADER ── */
+  .scenario-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 4px;
+  }
+  .scenario-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 15px; color: var(--text-primary);
+    margin-bottom: 16px; letter-spacing: -0.2px;
+  }
+
+  /* ── ROLE COLUMNS ── */
+  .ditl-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .ditl-col {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .ditl-col-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+  }
+  .ditl-col-header.cvm { background: var(--cvm-bg); border-bottom: 1px solid var(--cvm-border); }
+  .ditl-col-header.cva { background: var(--cva-bg); border-bottom: 1px solid var(--cva-border); }
+
+  .role-badge {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+  }
+  .rb-cvm { background: var(--cvm-bg); color: var(--cvm-color); border: 1px solid var(--cvm-border); }
+  .rb-cva { background: var(--cva-bg); color: var(--cva-color); border: 1px solid var(--cva-border); }
+
+  .col-role-name {
+    font-weight: 700; font-size: 13.5px; color: var(--text-primary);
+  }
+
+  .ditl-col-body {
+    background: var(--bg-white);
+    padding: 0;
+  }
+
+  /* ── ACTIVITY ITEMS ── */
+  .activity {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .activity:last-child { border-bottom: none; }
+
+  .activity-time {
+    font-family: 'DM Mono', monospace; font-size: 9.5px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-faint); min-width: 60px; flex-shrink: 0;
+    padding-top: 2px; line-height: 1.3;
+  }
+
+  .activity-content { flex: 1; }
+
+  .activity-title {
+    font-weight: 600; font-size: 13px;
+    color: var(--text-primary); margin-bottom: 3px;
+  }
+
+  .activity-desc {
+    font-size: 12.5px; color: var(--text-body); line-height: 1.55;
+  }
+
+  .activity-tag {
+    font-family: 'DM Mono', monospace; font-size: 8.5px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 10px;
+    display: inline-block; margin-top: 5px;
+  }
+  .tag-cvp  { background: var(--teal-lt); color: var(--teal-xdk); border: 1px solid var(--teal-border); }
+  .tag-rel  { background: var(--cvm-bg); color: var(--cvm-color); border: 1px solid var(--cvm-border); }
+  .tag-data { background: var(--cva-bg); color: var(--cva-color); border: 1px solid var(--cva-border); }
+  .tag-collab { background: rgba(99,68,181,0.07); color: #6344b5; border: 1px solid rgba(99,68,181,0.20); }
+
+  /* ── DIVIDER BETWEEN SCENARIOS ── */
+  .scenario-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* ── CALLOUT BOX ── */
+  .callout {
+    border-radius: 8px; padding: 16px 20px; margin-top: 24px;
+  }
+  .callout.warn {
+    background: var(--warn-bg); border: 1px solid var(--warn-border);
+  }
+  .callout-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .callout.warn .callout-label { color: var(--warn-color); }
+  .callout p {
+    font-size: 13px; color: var(--text-body); line-height: 1.65;
+  }
+  .callout ul {
+    list-style: none; margin-top: 8px;
+  }
+  .callout ul li {
+    font-size: 13px; color: var(--text-body);
+    padding: 5px 0 5px 14px; position: relative;
+    border-bottom: 1px solid var(--warn-border); line-height: 1.55;
+  }
+  .callout ul li:last-child { border-bottom: none; }
+  .callout ul li::before {
+    content: '›'; position: absolute; left: 0;
+    color: var(--warn-color); font-weight: 700;
+  }
+
+  /* ── YOUR ROLE BOX ── */
+  .your-role-box {
+    background: var(--teal-lt); border: 1px solid var(--teal-border);
+    border-radius: 6px; padding: 12px 16px; margin-top: 20px;
+  }
+  .your-role-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal-xdk); margin-bottom: 6px;
+  }
+  .your-role-box p { font-size: 13px; color: var(--text-body); line-height: 1.65; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.28);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 48px; font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.8px;
+    text-transform: uppercase; flex-wrap: wrap; gap: 8px;
+  }
+  footer strong { color: var(--teal); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="wordmark">TEKION</div>
+    <h1>Manager Enablement Toolkit</h1>
+    <div class="header-sub">Customer Value Transformation &nbsp;·&nbsp; Leadership Reference Guide</div>
+    <div class="header-meta">
+      <span><strong>Audience</strong>CS Leadership Team</span>
+      <span><strong>Produced</strong>Phase 1 Workshop · April 29, 2026</span>
+      <span><strong>Covers</strong>Workshop Outcomes · Team Conversations · Enablement Sessions</span>
+      <span><strong>Produced by</strong>BP Learning Solutions</span>
+    </div>
+  </div>
+
+  <!-- SYSTEM MAP -->
+  <div class="system-map">
+    <span class="sm-label">Tekion Value OS</span>
+    <span class="sm-divider"></span>
+    <div class="sm-node"><span class="sm-item">Dealer Maturity Model</span><span class="sm-arrow">→</span></div>
+    <div class="sm-node"><span class="sm-item">Customer Value Plan</span><span class="sm-arrow">→</span></div>
+    <div class="sm-node"><span class="sm-item">Touchpoint Framework</span><span class="sm-arrow">→</span></div>
+    <div class="sm-node"><span class="sm-item">Customer Value Review</span></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <div class="purpose-note">
+      This toolkit is designed for three moments: the conversations you have with your managers and teams following the May 1 town hall, the 1:1 and team discussions that follow as your team absorbs the changes, and the virtual enablement sessions running May 11–22. Use what you need, when you need it. It is a reference, not a script.
+    </div>
+
+    <!-- ADKAR REMINDER -->
+    <div style="background:var(--bg-off);border:1px solid var(--border);border-radius:8px;padding:18px 22px;margin-bottom:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal-xdk);margin-bottom:10px;">A Framework to Keep in Mind — ADKAR</div>
+      <p style="font-size:13px;color:var(--text-body);line-height:1.7;margin-bottom:12px;">The workshop was designed around the ADKAR change model. The three sections of this toolkit follow the same logic. Keeping ADKAR in mind helps you understand where your team is — and what they need from you next.</p>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;">
+        <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:6px;padding:10px 10px 8px;text-align:center;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--teal-dk);line-height:1;margin-bottom:4px;">A</div>
+          <div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:3px;">Awareness</div>
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.4;">Why is this changing?</div>
+        </div>
+        <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:6px;padding:10px 10px 8px;text-align:center;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--teal-dk);line-height:1;margin-bottom:4px;">D</div>
+          <div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:3px;">Desire</div>
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.4;">Do I want to be part of it?</div>
+        </div>
+        <div style="background:rgba(4,222,187,0.06);border:1px solid var(--teal-border);border-radius:6px;padding:10px 10px 8px;text-align:center;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--teal-dk);line-height:1;margin-bottom:4px;">K</div>
+          <div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:3px;">Knowledge</div>
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.4;">How do I do it?</div>
+        </div>
+        <div style="background:rgba(4,222,187,0.06);border:1px solid var(--teal-border);border-radius:6px;padding:10px 10px 8px;text-align:center;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--teal-dk);line-height:1;margin-bottom:4px;">A</div>
+          <div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:3px;">Ability</div>
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.4;">Can I do it well?</div>
+        </div>
+        <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:6px;padding:10px 10px 8px;text-align:center;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--teal-dk);line-height:1;margin-bottom:4px;">R</div>
+          <div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:3px;">Reinforcement</div>
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.4;">Will it stick?</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:10px;"><strong style="color:var(--text-body);">Where this toolkit fits:</strong> Section 1 supports Awareness and Desire — your team needs to understand what changed and why. Section 2 supports Desire — helping them want to make this shift. Section 3 supports Knowledge and Ability — building the capability to operate the new model. Section 4 supports Knowledge and Ability — showing what the new model looks like in practice. Reinforcement is your ongoing work as a manager after the enablement sessions close.</p>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+      <div class="toc-label">What's In This Toolkit</div>
+      <div class="toc-grid" style="grid-template-columns:1fr 1fr;">
+        <a class="toc-item" href="#section1">
+          <div class="toc-num">1</div>
+          <div class="toc-title">Workshop Outcomes</div>
+          <div class="toc-desc">What was decided and built. Share with your managers to bridge from April 17 to May enablement.</div>
+        </a>
+        <a class="toc-item" href="#section2">
+          <div class="toc-num">2</div>
+          <div class="toc-title">Team Conversation Guide</div>
+          <div class="toc-desc">Talking points, FAQ, and coaching prompts for post-town hall team discussions.</div>
+        </a>
+        <a class="toc-item" href="#section3">
+          <div class="toc-num">3</div>
+          <div class="toc-title">Enablement Companion</div>
+          <div class="toc-desc">Session-by-session reference to use during and after Brett's May virtual sessions.</div>
+        </a>
+        <a class="toc-item" href="#section4">
+          <div class="toc-num">4</div>
+          <div class="toc-title">Day in the Life</div>
+          <div class="toc-desc">Two role-based scenarios — standard week and CVR prep week — showing what the new model looks like in practice.</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════
+         SECTION 1 — WORKSHOP OUTCOMES
+    ════════════════════════════════ -->
+    <section id="section1">
+      <h2>Section 1 — Workshop Outcomes</h2>
+      <p class="section-intro">What the leadership team aligned on during the April 28–29 workshop. Share this with your managers to connect what they heard on April 17 to what was produced in the workshop and what is coming in May.</p>
+
+      <div class="outcome-grid">
+        <div class="outcome-card">
+          <div class="outcome-card-label">What we aligned on</div>
+          <h3>The Identity Shift</h3>
+          <p>The move from Customer Success to Customer Value Services is not a rename. It is a shift in what we are accountable for. CVMs own outcomes, not relationships. CVAs own platform behavior, not support tickets. That behavioral shift is the foundation of everything built this week.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">What we validated</div>
+          <h3>Dealer Maturity Model v1</h3>
+          <p>A five-tier framework the leadership team owns and has stress-tested against real accounts. Tiers are Online, Active, Optimized, Value Realized, and Strategic. The most important insight: expansion module activation is the meaningful maturity signal, not module count.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">What we resolved</div>
+          <h3>Role Boundaries</h3>
+          <p>CVM owns the dealer relationship and commercial outcome. CVA owns platform behavior and adoption data. VVA owns scaled engagement and maturity progression for volume accounts. The CVP is CVM-authored with required CVA input. Dealer-facing communication routes through the CVM.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">What we built</div>
+          <h3>The Tekion Value OS</h3>
+          <p>Four connected tools: the Dealer Maturity Model, Customer Value Plan, Touchpoint Framework, and Customer Value Review. All four are designed to work together as a system. The tools exist as artifacts now. Phase 2 enablement teaches the team to use them.</p>
+        </div>
+      </div>
+
+      <!-- ROLE ACCOUNTABILITIES -->
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--text-primary);margin:24px 0 12px;letter-spacing:-0.2px;">Role Accountability Statements</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">Agreed in the workshop. Use these when your team asks what each role means in practice.</p>
+
+      <div class="role-block">
+        <div class="role-header rh-cvm">
+          <span class="role-badge rb-cvm">CVM</span>
+          <span class="role-name">Customer Value Manager</span>
+        </div>
+        <div class="role-body">
+          <p>The CVM owns the dealer relationship, the Customer Value Plan, and the commercial outcome. They are accountable for renewal, growth, and risk — and for ensuring the CVA has the account context to contribute effectively. At Tier 1 and 2 accounts, the CVM is a relationship builder and foundation partner. At Tier 4 and 5, the CVM is having a strategic business conversation about the dealer's future.</p>
+        </div>
+      </div>
+
+      <div class="role-block">
+        <div class="role-header rh-cva">
+          <span class="role-badge rb-cva">CVA</span>
+          <span class="role-name">Customer Value Architect</span>
+        </div>
+        <div class="role-body">
+          <p>The CVA owns the dealer's platform behavior — adoption depth, usage patterns, and expansion readiness. They translate what the data shows into the account plan and bring the technical credibility that makes the CVR a real business conversation. The CVA contributes Sections 2 and 3 of the Customer Value Plan as a required input. A CVP without CVA data is a draft.</p>
+        </div>
+      </div>
+
+      <div class="role-block">
+        <div class="role-header rh-vva">
+          <span class="role-badge rb-vva">VVA</span>
+          <span class="role-name">Virtual Value Assistance</span>
+        </div>
+        <div class="role-body">
+          <p>VVA delivers scaled value engagement for volume accounts — focused on self-sufficiency milestones and maturity progression. When a dealer reaches the threshold that warrants named CVM ownership, VVA owns the handoff. The escalation trigger is a maturity event, not a headcount decision. The full VVA operating model is a Phase 2 design item.</p>
+        </div>
+      </div>
+
+      <!-- WHAT STAYS OPEN -->
+      <div style="background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:8px;padding:16px 20px;margin-top:20px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--warn-color);margin-bottom:8px;">What Is Still Being Resolved</div>
+        <p style="font-size:13.5px;color:var(--text-body);line-height:1.7;">Not everything is finalized. Be honest with your managers about what is open. Overpromising creates the trust problems Mark named on April 17th.</p>
+        <ul style="list-style:none;margin-top:10px;">
+          <li style="font-size:13px;color:var(--text-body);padding:5px 0 5px 14px;position:relative;border-bottom:1px solid var(--warn-border);line-height:1.55;">
+            <span style="position:absolute;left:0;color:var(--warn-color);font-weight:700;">›</span>
+            VVA integration model and handoff logic -- Phase 2 planning item
+          </li>
+          <li style="font-size:13px;color:var(--text-body);padding:5px 0 5px 14px;position:relative;border-bottom:1px solid var(--warn-border);line-height:1.55;">
+            <span style="position:absolute;left:0;color:var(--warn-color);font-weight:700;">›</span>
+            CRM and tooling infrastructure for tracking CVP and CVR -- Ryan Mulhern leading
+          </li>
+          <li style="font-size:13px;color:var(--text-body);padding:5px 0 5px 14px;position:relative;border-bottom:1px solid var(--warn-border);line-height:1.55;">
+            <span style="position:absolute;left:0;color:var(--warn-color);font-weight:700;">›</span>
+            Horizontal product leadership assignments for Analytics, CRM, ARK, TekionPay
+          </li>
+          <li style="font-size:13px;color:var(--text-body);padding:5px 0 5px 14px;position:relative;line-height:1.55;">
+            <span style="position:absolute;left:0;color:var(--warn-color);font-weight:700;">›</span>
+            UK organizational structure -- still being finalized
+          </li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- ═══════════════════════════════
+         SECTION 2 — TEAM CONVERSATION GUIDE
+    ════════════════════════════════ -->
+    <section id="section2">
+      <h2>Section 2 — Team Conversation Guide</h2>
+      <p class="section-intro">For use after the May 1 town hall and in direct team conversations. Mark leads the town hall. Your job is what comes after -- the smaller, more personal conversations where your team members process what they heard and need honest answers from their manager.</p>
+
+      <!-- WHAT YOUR TEAM NEEDS FROM YOU -->
+      <div class="outcome-grid" style="margin-bottom:24px;">
+        <div class="outcome-card">
+          <div class="outcome-card-label">They need</div>
+          <h3>Clarity without overpromising</h3>
+          <p>Say what you know. Acknowledge what you don't. Follow up on what you don't have answers to. The April 17 meeting named this explicitly -- authenticity means not having all the answers but following up consistently.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">They need</div>
+          <h3>Calm in the room</h3>
+          <p>Your emotional register sets theirs. Leaders who appear anxious about the change create anxious teams. Mark's phrase was right: settle the crowd. Even-keel and steady is the most important thing you can model right now.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">They need</div>
+          <h3>A picture of what's coming</h3>
+          <p>The town hall announces the change. Your team conversations make it real. Use the timeline below to show them the path: what happens in May, when they get trained, when things go live.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">They need</div>
+          <h3>Permission to not have it all figured out</h3>
+          <p>The tools are being built. The enablement is coming. Your team doesn't need to be operating the new model perfectly on May 2nd. Help them understand the sequence and that support is built into the plan.</p>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--text-primary);margin:0 0 12px;letter-spacing:-0.2px;">What to Tell Your Team About What's Coming</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">May 1</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Town Hall — Mark presents the full picture</div>
+            <div class="timeline-desc">The organizational structure, the new role names, and the direction are announced to the full team. This is the first time most frontline team members hear the details officially.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Week of May 4</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Manager conversations — you and your team</div>
+            <div class="timeline-desc">Follow up with your team in 1:1s or team meetings. Answer the questions that came up at the town hall. Use this toolkit. Be honest about what's known and what's still being worked out.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">May 11–22</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Virtual enablement sessions — co-facilitated with designated leaders</div>
+            <div class="timeline-desc">Dedicated CVM and CVA enablement tracks covering the DMM, CVP, touchpoint cadence, and CVR. Sessions are co-facilitated by Brett and a designated leader from your team who brings the domain examples and field knowledge that make the content real. Your role: reinforce what's taught and answer questions your team brings you between sessions.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">May 25 week</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Finalization and Phase 2 input</div>
+            <div class="timeline-desc">Gather field reactions from your team — what's landing, what needs adjustment, what questions are still open. This input shapes Phase 2 planning and gives Brett what's needed to refine the operating model before June 1.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">June 1</div>
+          <div class="timeline-content">
+            <div class="timeline-title">New organization goes live — named accounts, new model</div>
+            <div class="timeline-desc">Formal go-live of the new organizational structure. Named account assignments in place. CVMs and CVAs operating the new model with the tools and language built in May.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--text-primary);margin:24px 0 12px;letter-spacing:-0.2px;">Questions Your Team Will Ask — And How to Answer Them</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">These are the real questions. Answer them directly. If you don't know, say so and follow up.</p>
+
+      <div class="faq-item open" id="faq1">
+        <div class="faq-header" onclick="toggleFaq('faq1')">
+          <span class="faq-tag faq-tag-all">All roles</span>
+          <span class="faq-q">Is my job at risk?</span>
+          <span class="faq-chevron">&#9658;</span>
+        </div>
+        <div class="faq-body">
+          No. This is a transformation of how we operate and what we're accountable for — not a reduction. The org is adding a new enablement layer and creating cleaner role definitions. Your job title and functional accountability are changing. Your position in the organization is not.
+          <div class="faq-note">
+            <div class="faq-note-label">If pushed further</div>
+            Be direct: the goal of this transformation is to grow the business, which means the team needs to succeed. A shrinking team is not the plan. What is changing is what success looks like.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" id="faq2">
+        <div class="faq-header" onclick="toggleFaq('faq2')">
+          <span class="faq-tag faq-tag-cvm">CVM</span>
+          <span class="faq-q">What does my job actually look like differently starting May 1st?</span>
+          <span class="faq-chevron">&#9658;</span>
+        </div>
+        <div class="faq-body">
+          The title change is immediate. The behavioral shift is phased. In May you will go through dedicated enablement sessions that teach you the new tools and the new operating model. You will not be expected to run a full Customer Value Review on May 2nd. What you are expected to do right away: start using the CVM language, begin building familiarity with your named accounts, and show up to the enablement sessions ready to engage.
+        </div>
+      </div>
+
+      <div class="faq-item" id="faq3">
+        <div class="faq-header" onclick="toggleFaq('faq3')">
+          <span class="faq-tag faq-tag-cva">CVA</span>
+          <span class="faq-q">How is a CVA different from what I do today as a CSE?</span>
+          <span class="faq-chevron">&#9658;</span>
+        </div>
+        <div class="faq-body">
+          The core shift is from reactive technical support to proactive platform expertise. A CVA is not a support engineer. A CVA is the person who understands what a dealer's platform data is saying and translates that into an account plan alongside the CVM. You will have a defined contribution to the Customer Value Plan and a named role in the Customer Value Review. Your work becomes visible and tied to business outcomes rather than ticket resolution.
+        </div>
+      </div>
+
+      <div class="faq-item" id="faq4">
+        <div class="faq-header" onclick="toggleFaq('faq4')">
+          <span class="faq-tag faq-tag-comp">Comp</span>
+          <span class="faq-q">How does compensation change?</span>
+          <span class="faq-chevron">&#9658;</span>
+        </div>
+        <div class="faq-body">
+          Q1 bonuses are paid at 100% at end of May — the team's strong individual performance was recognized. Q2 transitions to a team-based plan (gross revenue retention and net dollar retention), with potential earnings up to 125% of target. Q3 and Q4 shift to individual-based plans tied to named accounts. Detailed comp plan documentation and FAQs will be distributed to all managers. Review those materials before your team conversations.
+          <div class="faq-note">
+            <div class="faq-note-label">If you get questions you can't answer</div>
+            Escalate to Mark or James directly. Do not speculate on compensation details. The comp documentation is the source of truth.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" id="faq5">
+        <div class="faq-header" onclick="toggleFaq('faq5')">
+          <span class="faq-tag faq-tag-all">All roles</span>
+          <span class="faq-q">Who owns my accounts now? Will I have handoffs?</span>
+          <span class="faq-chevron">&#9658;</span>
+        </div>
+        <div class="faq-body">
+          The direction is to minimize handoffs over the next 4–6 weeks. Stay the course with current assignments unless there is a critical reason to change. Named account assignments will be formalized by end of April. The goal of the new model is continuity — the opposite of the excessive handoffs that frustrated customers in the current structure.
+        </div>
+      </div>
+
+      <div class="faq-item" id="faq6">
+        <div class="faq-header" onclick="toggleFaq('faq6')">
+          <span class="faq-tag faq-tag-all">All roles</span>
+          <span class="faq-q">What is Brett Powell doing here and what will training look like?</span>
+          <span class="faq-chevron">&#9658;</span>
+        </div>
+        <div class="faq-body">
+          Brett Powell is an external enablement partner co-facilitating this transformation alongside your leadership team. This is the first formal enablement investment in the team's history. Starting the week of May 11th, Brett co-leads dedicated virtual sessions for CVM and CVA tracks — paired with a designated leader from the team who brings the real-world context and domain examples that make the frameworks come to life. Sessions are designed to be practical working sessions where the team applies the tools to their own accounts, not presentations.
+        </div>
+      </div>
+
+      <div class="faq-item" id="faq7">
+        <div class="faq-header" onclick="toggleFaq('faq7')">
+          <span class="faq-tag faq-tag-all">All roles</span>
+          <span class="faq-q">Is this just a rebrand or is something actually changing?</span>
+          <span class="faq-chevron">&#9658;</span>
+        </div>
+        <div class="faq-body">
+          Something is actually changing. The title change is the smallest part of it. What changes is what we are accountable for. A CVM who runs a Customer Value Review instead of a QBR, builds a Customer Value Plan for every account, and tracks dealer maturity over time is doing a fundamentally different job than a CSM who manages escalations and attends renewal calls. The tools being built support that shift. The training in May teaches it. The metrics we agreed to hold us accountable to it.
+          <div class="faq-note">
+            <div class="faq-note-label">This is the most important question to answer well</div>
+            If your team believes this is a cosmetic change, they will not invest in the enablement. Your conviction about the real shift will set the tone.
+          </div>
+        </div>
+      </div>
+
+      <!-- COACHING PROMPTS -->
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--text-primary);margin:28px 0 12px;letter-spacing:-0.2px;">Coaching Prompts for 1:1 Conversations</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">Use these in individual conversations to open real dialogue rather than broadcast messaging.</p>
+      <div class="prompt-list">
+        <div class="prompt-item">What part of this change feels most uncertain to you right now?</div>
+        <div class="prompt-item">When you think about your strongest dealer relationships, what makes them work? How does the new model support that?</div>
+        <div class="prompt-item">If the transformation works the way it's designed, what does your job look like in six months that it doesn't look like today?</div>
+        <div class="prompt-item">What would you need to feel confident walking into a Customer Value Review with a dealer you know well?</div>
+        <div class="prompt-item">What's one thing you're genuinely excited about in the new model — even if you have questions about other parts?</div>
+      </div>
+
+    </section>
+
+    <!-- ═══════════════════════════════
+         SECTION 3 — ENABLEMENT COMPANION
+    ════════════════════════════════ -->
+    <section id="section3">
+      <h2>Section 3 — Enablement Companion</h2>
+      <p class="section-intro">Session-by-session reference for the virtual enablement sessions running weeks of May 11 and 18. Sessions are co-facilitated by Brett and a designated leader for each track — the leader brings field examples and domain knowledge, Brett provides the framework structure. For each session: what the team will cover, the key concepts they need to understand, and your role as their manager in reinforcing what they learn.</p>
+
+      <div class="companion-item open" id="comp1">
+        <div class="companion-header" onclick="toggleComp('comp1')">
+          <div class="companion-num">1</div>
+          <div class="companion-title">Dealer Maturity Model</div>
+          <div class="companion-date">Week of May 11 · CVM and CVA tracks</div>
+          <div class="companion-chevron">&#9658;</div>
+        </div>
+        <div class="companion-body">
+          <div class="companion-what">What your team will learn</div>
+          <div class="companion-desc">The five-tier framework for understanding where a dealer is in their Tekion journey — and what CVM and CVA behavior looks like at each tier. Foundation modules (Accounting, Parts, Service) vs. expansion modules (CRM, TekionPay, Analytics, AI) as the key distinction.</div>
+          <ul class="key-concepts">
+            <li><strong>Five tiers:</strong> Online, Active, Optimized, Value Realized, Strategic</li>
+            <li><strong>The key insight:</strong> Every dealer goes live with foundation modules. Expansion module activation is the meaningful maturity signal.</li>
+            <li><strong>Four diagnostic dimensions:</strong> Adoption and Usage (CVA-owned) · Value Realization and Self-Sufficiency (CVM-owned)</li>
+            <li><strong>Why it matters:</strong> Where a dealer sits in the DMM determines how the CVM and CVA show up. A Tier 1 conversation is not the same as a Tier 4 conversation.</li>
+          </ul>
+          <div class="your-role-box">
+            <div class="your-role-label">Your role as manager</div>
+            <p>After the session, ask your team: "Take three of your accounts and tell me which tier you'd place them in today. What's your evidence?" This grounds the model in real accounts rather than theory. If they struggle, it's a coaching signal — not a failure.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="companion-item" id="comp2">
+        <div class="companion-header" onclick="toggleComp('comp2')">
+          <div class="companion-num">2</div>
+          <div class="companion-title">Customer Value Plan</div>
+          <div class="companion-date">Week of May 11 · CVM and CVA tracks</div>
+          <div class="companion-chevron">&#9658;</div>
+        </div>
+        <div class="companion-body">
+          <div class="companion-what">What your team will learn</div>
+          <div class="companion-desc">The CVP is a living account document — not a one-time intake form. It is the proof that the CVM understands what success looks like for a specific dealer and is tracking it. CVMs author it, CVAs contribute the maturity and adoption sections, and it gets updated when something changes.</div>
+          <ul class="key-concepts">
+            <li><strong>Phase 1 active sections:</strong> Dealer Snapshot (CVM) · Dealer Goals and Success Criteria (CVM) · Maturity and Adoption Status (CVA contributes)</li>
+            <li><strong>Phase 2 sections coming:</strong> Value Realized · Value Actions · Risk Flags · Expansion Opportunities</li>
+            <li><strong>When to update:</strong> When something changes — not on a fixed calendar. Maturity tier shift, new module live, risk flag, renewal window opens.</li>
+            <li><strong>Why it matters:</strong> The CVP without CVA input is a draft. A CVR without a CVP is a generic meeting.</li>
+          </ul>
+          <div class="your-role-box">
+            <div class="your-role-label">Your role as manager</div>
+            <p>After the session, inspect one CVP draft from each team member. Not to grade it — to understand where they need help. The most common early gaps: dealer goals that are too vague, maturity tier that hasn't been calibrated with the CVA, and the CVP treated as a form rather than a living document.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="companion-item" id="comp3">
+        <div class="companion-header" onclick="toggleComp('comp3')">
+          <div class="companion-num">3</div>
+          <div class="companion-title">Touchpoint Framework — Check-In and CVR Cadence</div>
+          <div class="companion-date">Week of May 18 · CVM track focus</div>
+          <div class="companion-chevron">&#9658;</div>
+        </div>
+        <div class="companion-body">
+          <div class="companion-what">What your team will learn</div>
+          <div class="companion-desc">Two touchpoints define CVM engagement: the Customer Value Check-In (relationship call, 20–30 minutes, conversational, monthly or bi-monthly) and the Customer Value Review (structured business meeting, 60–90 minutes, quarterly, with dealer leadership). They are not interchangeable.</div>
+          <ul class="key-concepts">
+            <li><strong>Check-In purpose:</strong> Relationship maintenance, early issue detection, momentum-building. Low prep, low friction, CVM-owned.</li>
+            <li><strong>CVR purpose:</strong> Document progress against goals, review adoption, align on next maturity milestone. Significant prep, dealer leadership present.</li>
+            <li><strong>Cadence by tier:</strong> Tier 1–2 accounts get monthly Check-Ins. Tier 3–5 accounts get bi-monthly. All tiers get quarterly CVRs except Tier 5 (semi-annual).</li>
+            <li><strong>The dependency:</strong> A CVR cannot be run effectively without an active CVP. The CVP is the pre-meeting brief.</li>
+          </ul>
+          <div class="your-role-box">
+            <div class="your-role-label">Your role as manager</div>
+            <p>Review your team's account list by tier. Does the cadence model work given their current account loads? If someone is managing 40+ accounts across all tiers, monthly Check-Ins on Tier 1 and 2 accounts is unrealistic without prioritization rules. That's a coaching and resource conversation, not a compliance conversation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="companion-item" id="comp4">
+        <div class="companion-header" onclick="toggleComp('comp4')">
+          <div class="companion-num">4</div>
+          <div class="companion-title">Customer Value Review — Running the Meeting</div>
+          <div class="companion-date">Week of May 18 · CVM and CVA tracks</div>
+          <div class="companion-chevron">&#9658;</div>
+        </div>
+        <div class="companion-body">
+          <div class="companion-what">What your team will learn</div>
+          <div class="companion-desc">The CVR run document takes CVMs from pre-meeting preparation through the five live meeting blocks to the post-meeting CVP update. The CVR is not done until the CVM has updated the CVP. It replaces the QBR with a dealer goal-led conversation, not a Tekion product review.</div>
+          <ul class="key-concepts">
+            <li><strong>Pre-meeting:</strong> CVM reviews dealer goals from CVP. CVA brings adoption snapshot. Intent is set. CVM arrives with a point of view.</li>
+            <li><strong>Five blocks:</strong> Open (dealer's world) · Progress (prior commitments) · Value (what the platform is doing for their business) · Next chapter (90-day forward look) · Close (commitments, names, dates)</li>
+            <li><strong>Post-meeting:</strong> CVP updated within 24 hours. Seven sections to review. Not complete until the loop closes.</li>
+            <li><strong>The CVR is not a QBR:</strong> Dealer goal-led, not Tekion product-led. Business outcomes headline, not usage stats.</li>
+          </ul>
+          <div class="your-role-box">
+            <div class="your-role-label">Your role as manager</div>
+            <p>Sit in on one CVR (or a practice run) with each CVM in the first 60 days. Not to evaluate — to understand their comfort level and coaching needs. The most common early challenge: CVMs defaulting to a platform update presentation rather than a dealer goals conversation. That's a facilitation skill, not a knowledge gap.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="companion-item" id="comp5">
+        <div class="companion-header" onclick="toggleComp('comp5')">
+          <div class="companion-num">5</div>
+          <div class="companion-title">CVA Track — Platform Expertise and CVM Collaboration</div>
+          <div class="companion-date">Week of May 18 · CVA track</div>
+          <div class="companion-chevron">&#9658;</div>
+        </div>
+        <div class="companion-body">
+          <div class="companion-what">What your team will learn</div>
+          <div class="companion-desc">CVA-specific session covering the adoption diagnostic framework, how to prepare the CVA contribution to the CVP, how to present data in a CVR without owning the dealer relationship, and the expansion opportunity identification motion that feeds the Sales handoff.</div>
+          <ul class="key-concepts">
+            <li><strong>CVA's primary contribution:</strong> Section 3 of the CVP — maturity tier, module adoption depth, self-sufficiency assessment, support ticket patterns</li>
+            <li><strong>Data vs. relationship:</strong> CVA reads the platform. CVM reads the relationship. Neither can see the full picture alone — that's why the handoff matters.</li>
+            <li><strong>In the CVR:</strong> CVA presents data on Blocks 2 and 3. CVM facilitates. Dealer communication routes through CVM outside the CVR.</li>
+            <li><strong>Expansion flag:</strong> CVA identifies and documents expansion opportunities. These route to Sales — CVA defines the handoff, not the close.</li>
+          </ul>
+          <div class="your-role-box">
+            <div class="your-role-label">Your role as manager</div>
+            <p>After this session, verify that each CVA has a clear line of sight to the CVMs they work with and that the CVP input process is working. The most common early breakdown: CVA does the analysis but CVM doesn't pull it into the CVP before the CVR. That's a process gap, not a skills gap.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+    <section id="section4">
+    <h2>Section 4 — Day in the Life</h2>
+    <p class="section-intro">
+      This section provides two scenarios grounded in real operating conditions, one for a standard working week and one for a CVR prep week. Feel free to adjust based on the specifics of your team.
+    </p>
+
+    <div class="purpose-note">
+      These scenarios are illustrative, not prescriptive. The specific timing and account loads will vary by team, segment, and geography. The point is to show the <strong>rhythm and judgment calls</strong> of each role — not a minute-by-minute schedule.
+    </div>
+
+
+    <!-- ── SCENARIO 1: STANDARD WEEK ── -->
+    <div class="scenario-label">Scenario 1 of 2</div>
+    <div class="scenario-title">A Standard Working Week — Mid-Quarter, No CVR Scheduled</div>
+
+    <div class="ditl-cols">
+
+      <!-- CVM COLUMN -->
+      <div class="ditl-col">
+        <div class="ditl-col-header cvm">
+          <span class="role-badge rb-cvm">CVM</span>
+          <span class="col-role-name">Customer Value Manager</span>
+        </div>
+        <div class="ditl-col-body">
+
+          <div class="activity">
+            <div class="activity-time">Mon AM</div>
+            <div class="activity-content">
+              <div class="activity-title">Account triage and week planning</div>
+              <div class="activity-desc">Review the week's account list. Which accounts have a Check-In scheduled? Any risk flags that came in over the weekend? Pull up the CVP for accounts with active conversations — not all of them, the ones that are live this week.</div>
+              <span class="activity-tag tag-cvp">CVP review</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Mon–Tue</div>
+            <div class="activity-content">
+              <div class="activity-title">Customer Value Check-Ins (2–3 calls)</div>
+              <div class="activity-desc">20–30 minute relationship calls. Low prep, high quality listening. The goal is to surface what's happening in the dealer's world before it becomes an issue, not to report on Tekion platform stats. These are relationship-maintenance calls.</div>
+              <span class="activity-tag tag-rel">Relationship</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Mid-week</div>
+            <div class="activity-content">
+              <div class="activity-title">CVP update for accounts that moved</div>
+              <div class="activity-desc">After each Check-In, note anything that changes the account picture: a new contact, a staffing change at the dealer, a frustration the GM mentioned. The CVP gets updated when something changes — not on a fixed schedule.</div>
+              <span class="activity-tag tag-cvp">CVP update</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Mid-week</div>
+            <div class="activity-content">
+              <div class="activity-title">Check-in with CVA on shared accounts</div>
+              <div class="activity-desc">Quick sync — 15 minutes. What is the CVA seeing in the platform data? Any adoption patterns worth knowing before the next dealer conversation? This is the handoff that keeps the CVP current and the CVR grounded in data.</div>
+              <span class="activity-tag tag-collab">CVM + CVA</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Thu–Fri</div>
+            <div class="activity-content">
+              <div class="activity-title">Renewal and growth visibility</div>
+              <div class="activity-desc">For accounts approaching renewal windows, confirm the conversation is open. This is not a Sales handoff yet — it's the CVM staying ahead of the commercial cycle. Flag accounts where the relationship or maturity status creates risk.</div>
+              <span class="activity-tag tag-rel">Commercial awareness</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CVA COLUMN -->
+      <div class="ditl-col">
+        <div class="ditl-col-header cva">
+          <span class="role-badge rb-cva">CVA</span>
+          <span class="col-role-name">Customer Value Architect</span>
+        </div>
+        <div class="ditl-col-body">
+
+          <div class="activity">
+            <div class="activity-time">Mon AM</div>
+            <div class="activity-content">
+              <div class="activity-title">Platform data review for priority accounts</div>
+              <div class="activity-desc">Pull usage and adoption data for the accounts with active CVPs this week. What modules are underperforming? Any accounts that appear to have stalled since the last review? Prioritize accounts where the CVM has conversations scheduled.</div>
+              <span class="activity-tag tag-data">Data review</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Mon–Tue</div>
+            <div class="activity-content">
+              <div class="activity-title">Adoption follow-up with dealers</div>
+              <div class="activity-desc">Direct outreach where adoption metrics show a gap. This is not a support call — it's a proactive platform conversation. "We're seeing low utilization in Parts — what's getting in the way?" The CVA owns this conversation, but dealer relationship escalations route through the CVM.</div>
+              <span class="activity-tag tag-data">Adoption</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Mid-week</div>
+            <div class="activity-content">
+              <div class="activity-title">CVP contribution — Section 3 input</div>
+              <div class="activity-desc">Update maturity tier assessment, module adoption depth, and self-sufficiency scores for accounts where something changed. The CVP is only as good as the CVA input inside it. A CVM should never be walking into a CVR with stale platform data.</div>
+              <span class="activity-tag tag-cvp">CVP input</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Mid-week</div>
+            <div class="activity-content">
+              <div class="activity-title">Sync with CVM on shared accounts</div>
+              <div class="activity-desc">15-minute handoff. Share what the data is showing. Flag anything that needs to come into the next Check-In or become a CVR agenda item. This is the connection point between platform behavior and account strategy.</div>
+              <span class="activity-tag tag-collab">CVM + CVA</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Thu–Fri</div>
+            <div class="activity-content">
+              <div class="activity-title">Expansion opportunity identification</div>
+              <div class="activity-desc">For Tier 3+ accounts, identify any indicators that an expansion module conversation makes sense — CRM, TekionPay, Analytics, AI. Document the flag in the CVP. This routes to Sales when the account is ready. The CVA defines the opportunity; the CVA does not own the close.</div>
+              <span class="activity-tag tag-data">Expansion flag</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /ditl-cols -->
+
+    <div class="your-role-box">
+      <div class="your-role-label">Your role as manager — standard week</div>
+      <p>The most common early pattern is CVMs filling their week with reactive work and CVAs staying in support mode. The Check-In cadence and the CVM/CVA mid-week sync are the two behaviors worth reinforcing first — they are the structural habits that make the rest of the model work. If those two things are happening, the week is moving in the right direction.</p>
+    </div>
+
+
+    <hr class="scenario-divider">
+
+
+    <!-- ── SCENARIO 2: CVR PREP WEEK ── -->
+    <div class="scenario-label">Scenario 2 of 2</div>
+    <div class="scenario-title">A CVR Prep Week — CVM and CVA Preparing a Tier 3 Account Review</div>
+
+    <div class="ditl-cols">
+
+      <!-- CVM COLUMN -->
+      <div class="ditl-col">
+        <div class="ditl-col-header cvm">
+          <span class="role-badge rb-cvm">CVM</span>
+          <span class="col-role-name">Customer Value Manager</span>
+        </div>
+        <div class="ditl-col-body">
+
+          <div class="activity">
+            <div class="activity-time">Mon</div>
+            <div class="activity-content">
+              <div class="activity-title">CVP review — arrive with a point of view</div>
+              <div class="activity-desc">Pull the dealer's CVP. Confirm the dealer goals are current. Review what was committed at the last CVR. Where did progress happen? Where did it stall? The CVM enters the CVR with answers — not questions — about where the account stands.</div>
+              <span class="activity-tag tag-cvp">CVP prep</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Tue</div>
+            <div class="activity-content">
+              <div class="activity-title">Pre-CVR sync with CVA</div>
+              <div class="activity-desc">30-minute working session. CVA walks through the adoption snapshot. CVM and CVA align on what goes into Blocks 2 and 3 of the CVR agenda. CVM sets the intent: what is the one thing this CVR needs to accomplish?</div>
+              <span class="activity-tag tag-collab">Joint prep</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Wed</div>
+            <div class="activity-content">
+              <div class="activity-title">Dealer logistics and pre-call confirmation</div>
+              <div class="activity-desc">Confirm attendance — dealer GM or equivalent needs to be in the room. A CVR without dealer leadership present is a check-in, not a value review. Circulate the agenda 24 hours in advance: goals, progress, forward look, commitments.</div>
+              <span class="activity-tag tag-rel">Relationship</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Thu</div>
+            <div class="activity-content">
+              <div class="activity-title">Run the CVR — five blocks</div>
+              <div class="activity-desc">Open (dealer's world) → Progress (prior commitments) → Value (platform impact on their business) → Next chapter (90-day forward look) → Close (commitments, names, dates). CVM facilitates. CVA presents on Blocks 2 and 3. Dealer does most of the talking in Blocks 1 and 4.</div>
+              <span class="activity-tag tag-rel">CVR delivery</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Within 24h</div>
+            <div class="activity-content">
+              <div class="activity-title">CVP update — close the loop</div>
+              <div class="activity-desc">Update the CVP within 24 hours of the CVR. Seven sections to review. New commitments documented. Maturity tier confirmed or adjusted. Risk flags updated. The CVR is not complete until the CVP reflects what happened in the room.</div>
+              <span class="activity-tag tag-cvp">CVP update</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CVA COLUMN -->
+      <div class="ditl-col">
+        <div class="ditl-col-header cva">
+          <span class="role-badge rb-cva">CVA</span>
+          <span class="col-role-name">Customer Value Architect</span>
+        </div>
+        <div class="ditl-col-body">
+
+          <div class="activity">
+            <div class="activity-time">Mon</div>
+            <div class="activity-content">
+              <div class="activity-title">Build the adoption snapshot</div>
+              <div class="activity-desc">Pull platform data for the account. Module utilization depth, active user counts, support ticket patterns, self-sufficiency indicators. Identify what's improved since the last CVR and where the gaps still are. The CVA brings a story, not a spreadsheet.</div>
+              <span class="activity-tag tag-data">Data prep</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Tue</div>
+            <div class="activity-content">
+              <div class="activity-title">Pre-CVR sync with CVM</div>
+              <div class="activity-desc">Walk the CVM through the adoption snapshot. Flag anything surprising. Agree on how Blocks 2 and 3 will run. CVA confirms the CVP Section 3 input is current before the CVM finalizes prep.</div>
+              <span class="activity-tag tag-collab">Joint prep</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Wed</div>
+            <div class="activity-content">
+              <div class="activity-title">Finalize CVP Section 3 contribution</div>
+              <div class="activity-desc">Maturity tier assessment locked. Module adoption depth confirmed. Expansion readiness flagged if applicable. The CVP Section 3 needs to reflect current data — not last quarter's snapshot — before the CVR happens.</div>
+              <span class="activity-tag tag-cvp">CVP input</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Thu</div>
+            <div class="activity-content">
+              <div class="activity-title">Present in the CVR — Blocks 2 and 3</div>
+              <div class="activity-desc">CVA presents the platform data in Blocks 2 (progress against prior commitments) and 3 (value the platform is driving). CVM facilitates the conversation. CVA answers dealer questions on product and adoption. Dealer-facing follow-up routes through the CVM after the meeting.</div>
+              <span class="activity-tag tag-data">CVR delivery</span>
+            </div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-time">Post-CVR</div>
+            <div class="activity-content">
+              <div class="activity-title">Flag expansion opportunities from the session</div>
+              <div class="activity-desc">If the CVR surfaced indicators of readiness for an expansion module, document the flag in the CVP and route to Sales through the CVM. This is the CVA's contribution to the growth motion — not closing, but identifying and documenting.</div>
+              <span class="activity-tag tag-data">Expansion flag</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /ditl-cols -->
+
+    <div class="your-role-box">
+      <div class="your-role-label">Your role as manager — CVR prep week</div>
+      <p>The most common early failure mode in CVRs is the CVM walking in without a point of view and the CVA walking in without a current adoption snapshot. Those two gaps produce a generic meeting — which is exactly what we're replacing. Sit in on a practice run before the first live CVR for each CVM. One session. You're not grading — you're calibrating.</p>
+    </div>
+
+    <!-- WHAT TO WATCH FOR CALLOUT -->
+    <div class="callout warn" style="margin-top: 24px;">
+      <div class="callout-label">What to watch for in the first 60 days</div>
+      <p>These are the early warning signs that the model is not taking hold. If you see them, it's a coaching conversation — not a performance issue.</p>
+      <ul>
+        <li>CVM Check-Ins turning into status calls rather than relationship conversations</li>
+        <li>CVA defaulting to reactive support tickets instead of proactive adoption outreach</li>
+        <li>CVP not being updated after a Check-In or CVR — the loop is not closing</li>
+        <li>CVM and CVA not syncing mid-week — each operating in their own lane</li>
+        <li>CVR agenda defaulting to a Tekion product update rather than a dealer goals conversation</li>
+      </ul>
+    </div>
+
+  </section>
+
+  </div><!-- /body -->
+
+  <footer>
+    <span>Confidential &nbsp;·&nbsp; <strong>BP Learning Solutions</strong> &nbsp;·&nbsp; bp-learningsolutions.com</span>
+    <span>Tekion Corp. CS Transformation &nbsp;·&nbsp; Phase 1 — April 2026</span>
+  </footer>
+
+</div>
+
+<script>
+function toggleFaq(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+function toggleComp(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+// Smooth scroll for TOC links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
